@@ -1,11 +1,18 @@
 import { useFormulario } from "../hooks/useFormulario";
+import type { DatosFormulario } from "../types";
 
-export default function Formulario() {
+type FormularioProps = {
+  agregarCita: (datos: DatosFormulario) => void;
+};
+
+export default function Formulario({agregarCita}:FormularioProps) {
+
   const { datos, setDatos, limpiarFormulario, handleChange } = useFormulario();
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => { //fUNCION PARA MANEJAR LO QUE VA A PASAR AL TOCAR EL BOTON DE SUMMIT.
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    //fUNCION PARA MANEJAR LO QUE VA A PASAR AL TOCAR EL BOTON DE SUMMIT.
     e.preventDefault();
-
+    agregarCita(datos);
     console.log(datos);
   };
 
@@ -107,7 +114,7 @@ export default function Formulario() {
 
         <input
           type="submit"
-          className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+          className="bg-green-600 w-full p-3 text-white uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors"
           value="Registrar Paciente"
         />
       </form>
