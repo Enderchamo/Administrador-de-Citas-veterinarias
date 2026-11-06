@@ -1,12 +1,15 @@
 import  Formulario  from "./components/Formulario";
 import { useCitas } from "./hooks/useCitas";
+import ListaCitas from "./components/ListaCitas";
 
 
 function App() {
 
   const {citas, agregarCita}= useCitas()
+  console.log(citas);
 
   return (
+    
     <main className="bg-gray-100 min-h-screen" style={{ paddingTop: "80px" }}>
       <h1 className="font-black text-5xl text-center md:w-2/3 mx-auto">
         Seguimiento Pacientes {" "}
@@ -40,9 +43,11 @@ function App() {
               Pacientes y Citas
             </span>
           </p>
-          <div id="citas">
-            <p className="text-xl mt-5 mb-10 text-center">No Hay Pacientes</p>
-          </div>
+          <ListaCitas
+
+          citas={citas}
+
+          />
         </div>
       </div>
     </main>

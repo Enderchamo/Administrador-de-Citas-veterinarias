@@ -13,6 +13,7 @@ export default function Formulario({agregarCita}:FormularioProps) {
     //fUNCION PARA MANEJAR LO QUE VA A PASAR AL TOCAR EL BOTON DE SUMMIT.
     e.preventDefault();
     agregarCita(datos);
+    limpiarFormulario();
     console.log(datos);
   };
 
@@ -36,9 +37,9 @@ export default function Formulario({agregarCita}:FormularioProps) {
             id="paciente"
             placeholder="Nombre Paciente"
             name="paciente"
-            value={datos.nombre}
+            value={datos.nombre} //Value del input se establece en el valor actual del estado de datos.nombre, lo que permite que el input refleje el valor actual del estado.Que es un string vacio.
             onChange={(e) => {
-              setDatos({ ...datos, nombre: e.target.value });
+              setDatos({ ...datos, nombre: e.target.value }); // Actualiza el estado de datos.nombre con el valor del input.
             }}
           />
         </div>
