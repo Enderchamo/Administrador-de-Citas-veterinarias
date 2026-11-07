@@ -1,18 +1,19 @@
-import  Formulario  from "./components/Formulario";
+import Formulario from "./components/Formulario";
 import { useCitas } from "./hooks/useCitas";
 import ListaCitas from "./components/ListaCitas";
-
+import { useState } from "react";
+import type { Cita } from "./types";
 
 function App() {
+  const { citas, agregarCita, eliminarCita } = useCitas();
+  const [citaEditar, setCitaEditar] = useState<Cita | null>(null);
 
-  const {citas, agregarCita}= useCitas()
   console.log(citas);
 
   return (
-    
     <main className="bg-gray-100 min-h-screen" style={{ paddingTop: "80px" }}>
       <h1 className="font-black text-5xl text-center md:w-2/3 mx-auto">
-        Seguimiento Pacientes {" "}
+        Seguimiento Pacientes{" "}
         <span className="text-green-500">Veterinaria</span>
       </h1>
 
@@ -23,31 +24,20 @@ function App() {
           </h2>
 
           <p className="text-lg mt-5 text-center mb-10">
-            Añade Pacientes y {" "}
+            Añade Pacientes y{" "}
             <span className="text-green-500 font-bold">Administralos</span>
           </p>
 
-          <Formulario
-  
-          agregarCita={agregarCita}
-          
-          />
-          
+          <Formulario agregarCita={agregarCita} citaEditar={citaEditar} />
         </div>
 
         <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
           <h2 className="font-black text-3xl text-center">Listado Pacientes</h2>
           <p className="text-xl mt-5 mb-10 text-center">
-            Administra tus {" "}
-            <span className="text-green-500 font-bold">
-              Pacientes y Citas
-            </span>
+            Administra tus{" "}
+            <span className="text-green-500 font-bold">Pacientes y Citas</span>
           </p>
-          <ListaCitas
-
-          citas={citas}
-
-          />
+          <ListaCitas citas={citas} eliminarCita={eliminarCita} setCitaEditar={setCitaEditar} />
         </div>
       </div>
     </main>

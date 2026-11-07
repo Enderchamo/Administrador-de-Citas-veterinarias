@@ -1,21 +1,39 @@
+import { useEffect, useEffectEvent } from "react";
 import { useFormulario } from "../hooks/useFormulario";
-import type { DatosFormulario } from "../types";
+import type { Cita, DatosFormulario } from "../types";
 
 type FormularioProps = {
-  agregarCita: (datos: DatosFormulario) => void;
+  agregarCita: (datos: DatosFormulario) => boolean;
+  citaEditar: Cita | null;
 };
 
-export default function Formulario({agregarCita}:FormularioProps) {
-
+export default function Formulario({
+  agregarCita,
+  citaEditar,
+}: FormularioProps) {
   const { datos, setDatos, limpiarFormulario, handleChange } = useFormulario();
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     //fUNCION PARA MANEJAR LO QUE VA A PASAR AL TOCAR EL BOTON DE SUMMIT.
     e.preventDefault();
-    agregarCita(datos);
-    limpiarFormulario();
+    if (!citaEditar) {
+      const citaValida = agregarCita(datos);
+      if (citaValida) {
+        limpiarFormulario();
+      }
+    }else{
+      console.log("editando cita");
+    }
+
     console.log(datos);
   };
+
+  useEffect(() => {
+    if (citaEditar) {
+      const { id, ...rest } = citaEditar;
+      setDatos(rest);
+    }
+  }, [citaEditar]);
 
   return (
     <>
@@ -38,9 +56,7 @@ export default function Formulario({agregarCita}:FormularioProps) {
             placeholder="Nombre Paciente"
             name="paciente"
             value={datos.nombre} //Value del input se establece en el valor actual del estado de datos.nombre, lo que permite que el input refleje el valor actual del estado.Que es un string vacio.
-            onChange={(e) => {
-              setDatos({ ...datos, nombre: e.target.value }); // Actualiza el estado de datos.nombre con el valor del input.
-            }}
+            onChange={handleChange}
           />
         </div>
 
