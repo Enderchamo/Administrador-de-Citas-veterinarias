@@ -2,13 +2,13 @@ import type { Cita as CitaType } from "../types";
 
 type CitaProps = {
   cita: CitaType;
-  eliminarCita: ((id: string) => void);
+handleEliminarCita: ((id: string) => void);
   setCitaEditar: React.Dispatch<React.SetStateAction<CitaType | null>>
 };
 
-export default function Cita({ cita, eliminarCita, setCitaEditar}: CitaProps) {
+export default function Cita({ cita, handleEliminarCita, setCitaEditar}: CitaProps) {
   const { id ,nombre, propietario, email, fecha, sintomas } = cita;
-
+  
 
   return (
     <div className="mx-5 my-10 bg-white shadow-md px-5 py-10 rounded-xl">
@@ -45,7 +45,7 @@ export default function Cita({ cita, eliminarCita, setCitaEditar}: CitaProps) {
         <button
           type="button"
           className="py-2 px-10 bg-red-600 hover:bg-red-700 text-white font-bold uppercase rounded-lg"
-          onClick={()=>eliminarCita(id)}
+          onClick={()=>handleEliminarCita(id)}
         >
           Eliminar
         </button>

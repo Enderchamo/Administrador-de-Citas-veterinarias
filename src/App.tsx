@@ -5,9 +5,15 @@ import { useState } from "react";
 import type { Cita } from "./types";
 
 function App() {
-  const { citas, agregarCita, eliminarCita } = useCitas();
+  const { citas, agregarCita, eliminarCita, editarCita } = useCitas();
   const [citaEditar, setCitaEditar] = useState<Cita | null>(null);
-
+  function handleEliminarCita(id: string) {
+    // Lógica pendiente
+    if (citaEditar !== null && id === citaEditar.id) {
+      setCitaEditar(null);
+    }
+    eliminarCita(id);
+  }
   console.log(citas);
 
   return (
@@ -28,7 +34,12 @@ function App() {
             <span className="text-green-500 font-bold">Administralos</span>
           </p>
 
-          <Formulario agregarCita={agregarCita} citaEditar={citaEditar} />
+          <Formulario
+            agregarCita={agregarCita}
+            citaEditar={citaEditar}
+            editarCita={editarCita}
+            setCitaEditar={setCitaEditar}
+          />
         </div>
 
         <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
@@ -37,7 +48,11 @@ function App() {
             Administra tus{" "}
             <span className="text-green-500 font-bold">Pacientes y Citas</span>
           </p>
-          <ListaCitas citas={citas} eliminarCita={eliminarCita} setCitaEditar={setCitaEditar} />
+          <ListaCitas
+            citas={citas}
+            handleEliminarCita={handleEliminarCita}
+            setCitaEditar={setCitaEditar}
+          />
         </div>
       </div>
     </main>

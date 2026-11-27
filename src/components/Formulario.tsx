@@ -5,11 +5,15 @@ import type { Cita, DatosFormulario } from "../types";
 type FormularioProps = {
   agregarCita: (datos: DatosFormulario) => boolean;
   citaEditar: Cita | null;
+  editarCita: (cita: Cita) => boolean;
+  setCitaEditar: React.Dispatch<React.SetStateAction<Cita | null>>;
 };
 
 export default function Formulario({
   agregarCita,
   citaEditar,
+  editarCita,
+  setCitaEditar,
 }: FormularioProps) {
   const { datos, setDatos, limpiarFormulario, handleChange } = useFormulario();
 
@@ -21,18 +25,25 @@ export default function Formulario({
       if (citaValida) {
         limpiarFormulario();
       }
-    }else{
-      console.log("editando cita");
+    } else {
+      const citaActualizada: Cita = { ...datos, id: citaEditar.id };
+      if (editarCita(citaActualizada)){
+        limpiarFormulario();
+      setCitaEditar(null);
+      }
+      
     }
 
     console.log(datos);
   };
 
+ 
+
   useEffect(() => {
     if (citaEditar) {
       const { id, ...rest } = citaEditar;
       setDatos(rest);
-    }
+    } else limpiarFormulario();
   }, [citaEditar]);
 
   return (
@@ -54,7 +65,7 @@ export default function Formulario({
             type="text"
             id="paciente"
             placeholder="Nombre Paciente"
-            name="paciente"
+            name="nombre"
             value={datos.nombre} //Value del input se establece en el valor actual del estado de datos.nombre, lo que permite que el input refleje el valor actual del estado.Que es un string vacio.
             onChange={handleChange}
           />
@@ -132,7 +143,7 @@ export default function Formulario({
         <input
           type="submit"
           className="bg-green-600 w-full p-3 text-white uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors"
-          value="Registrar Paciente"
+          value={citaEditar ? "Actualizar paciente" : "Registrar Paciente"}
         />
       </form>
     </>

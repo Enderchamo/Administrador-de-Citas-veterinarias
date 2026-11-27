@@ -1,13 +1,12 @@
 import { useState } from "react";
 import type { Cita, DatosFormulario } from "../types";
-
-import React from "react";
+import { validarCita } from "../helpers/validarCita";
 
 export function useCitas() {
   const [citas, SetCitas] = useState<Cita[]>([]);
 
   const agregarCita = (datos: DatosFormulario) => {
-    if (Object.values(datos).every((e) => e.trim() !== "")) {
+    if (validarCita(datos)) {
       const nuevaCita: Cita = {
         ...datos,
         id: crypto.randomUUID(),
@@ -20,11 +19,23 @@ export function useCitas() {
     }
   };
 
-  
-  function editarCita(cita:Cita) {
-    
-    
-
+  function editarCita(cita: Cita) {
+    if (validarCita(cita)) {
+      SetCitas((prev) =>
+        prev.map((citaActual) => {
+          if (citaActual.id === cita.id) {
+            const citaEditada = { ...cita };
+            return citaEditada;
+          } else {
+            return citaActual;
+          }
+        }),
+      );
+      return true;
+    } else {
+      alert("Todos los campos son obligatorios");
+      return false;
+    }
   }
 
   const eliminarCita = (id: string) => {
@@ -35,5 +46,6 @@ export function useCitas() {
     citas,
     agregarCita,
     eliminarCita,
+    editarCita,
   };
 }
