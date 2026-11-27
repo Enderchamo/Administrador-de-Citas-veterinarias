@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent } from "react";
+import { useEffect } from "react";
 import { useFormulario } from "../hooks/useFormulario";
 import type { Cita, DatosFormulario } from "../types";
 

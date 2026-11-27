@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Cita, DatosFormulario } from "../types";
 import { validarCita } from "../helpers/validarCita";
 
 export function useCitas() {
-  const [citas, SetCitas] = useState<Cita[]>([]);
+  const [citas, SetCitas] = useState<Cita[]>(obtenerCitas);
+
+  function obtenerCitas(): Cita[] {
+    const citasGuardadas = localStorage.getItem("citas");
+    if (citasGuardadas !== null) {
+      return JSON.parse(citasGuardadas);
+    } else return [];
+  }
+
+  useEffect(() => {
+    localStorage.setItem("citas", JSON.stringify(citas));
+  }, [citas]);
 
   const agregarCita = (datos: DatosFormulario) => {
     if (validarCita(datos)) {
