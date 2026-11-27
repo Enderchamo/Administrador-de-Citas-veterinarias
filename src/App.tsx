@@ -1,12 +1,26 @@
-import  Formulario  from "./components/Formulario";
-
+import Formulario from "./components/Formulario";
+import { useCitas } from "./hooks/useCitas";
+import ListaCitas from "./components/ListaCitas";
+import { useState } from "react";
+import type { Cita } from "./types";
 
 function App() {
+  const { citas, agregarCita, eliminarCita, editarCita } = useCitas();
+  const [citaEditar, setCitaEditar] = useState<Cita | null>(null);
+  function handleEliminarCita(id: string) {
+    // Lógica pendiente
+    if (citaEditar !== null && id === citaEditar.id) {
+      setCitaEditar(null);
+    }
+    eliminarCita(id);
+  }
+  console.log(citas);
+
   return (
     <main className="bg-gray-100 min-h-screen" style={{ paddingTop: "80px" }}>
       <h1 className="font-black text-5xl text-center md:w-2/3 mx-auto">
-        Seguimiento Pacientes {" "}
-        <span className="text-indigo-700">Veterinaria</span>
+        Seguimiento Pacientes{" "}
+        <span className="text-green-500">Veterinaria</span>
       </h1>
 
       <div className="mt-12 md:flex container mx-auto ">
@@ -16,25 +30,29 @@ function App() {
           </h2>
 
           <p className="text-lg mt-5 text-center mb-10">
-            Añade Pacientes y {" "}
-            <span className="text-indigo-600 font-bold">Administralos</span>
+            Añade Pacientes y{" "}
+            <span className="text-green-500 font-bold">Administralos</span>
           </p>
 
-          <Formulario/>
-          
+          <Formulario
+            agregarCita={agregarCita}
+            citaEditar={citaEditar}
+            editarCita={editarCita}
+            setCitaEditar={setCitaEditar}
+          />
         </div>
 
         <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
           <h2 className="font-black text-3xl text-center">Listado Pacientes</h2>
           <p className="text-xl mt-5 mb-10 text-center">
-            Administra tus {" "}
-            <span className="text-indigo-600 font-bold ">
-              Pacientes y Citas
-            </span>
+            Administra tus{" "}
+            <span className="text-green-500 font-bold">Pacientes y Citas</span>
           </p>
-          <div id="citas">
-            <p className="text-xl mt-5 mb-10 text-center">No Hay Pacientes</p>
-          </div>
+          <ListaCitas
+            citas={citas}
+            handleEliminarCita={handleEliminarCita}
+            setCitaEditar={setCitaEditar}
+          />
         </div>
       </div>
     </main>
